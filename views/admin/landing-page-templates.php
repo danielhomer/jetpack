@@ -1,5 +1,5 @@
 <?php
-	$modules = 	array('Appearance', 'Developers', 'Mobile', 'Other', 'Photos and Videos', 'Social', 'WordPress.com Stats', 'Writing' );
+	$modules = 	array('Appearance', 'Developers', 'Mobile', 'Other', 'Photos and Videos', 'Social', 'Site Stats', 'Writing' );
 ?>
 <script id="tmpl-category" type="text/html">
 	<?php foreach( $modules as $module ){
