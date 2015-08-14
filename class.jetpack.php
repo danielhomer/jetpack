@@ -435,6 +435,16 @@ class Jetpack {
 		 */
 		add_filter( 'jetpack_require_lib_dir', 		array( $this, 'require_lib_dir' ) );
 
+		/**
+		 * We need sync object even in Multisite mode
+		 */
+		$this->sync = new Jetpack_Sync;
+
+		/**
+		 * Trigger a wp_version sync when updating WP versions
+		 **/
+		add_action( 'upgrader_process_complete', array( 'Jetpack', 'update_get_wp_version' ), 10, 2 );
+		$this->sync->mock_option( 'wp_version', array( 'Jetpack', 'get_wp_version' ) );
 		/*
 		 * Load things that should only be in Network Admin.
 		 *
@@ -985,6 +995,24 @@ class Jetpack {
 			'number' => 2
 		) );
 		return 1 === (int) $user_query->get_total();
+	}
+
+	/**
+	 * Sync back wp_version
+	 */
+	public static function get_wp_version() {
+		global $wp_version;
+		return $wp_version;
+	}
+	/**
+	 * Keeps wp_version in sync with .com when WordPress core updates 
+	 **/
+	public static function update_get_wp_version( $update, $meta_data ) {
+		if ( 'update' === $meta_data['action'] && 'core' === $meta_data['type'] ) {
+			/** This action is documented in wp-includes/option.php */
+			/* This triggers the sync for the jetpack version */
+			do_action( 'add_option_jetpack_wp_version', 'jetpack_wp_version', (string) (bool) Jetpack::get_wp_version() );
+		}
 	}
 
 	/**
