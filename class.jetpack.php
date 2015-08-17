@@ -5635,7 +5635,7 @@ p {
 					<?php
 					// 401 means that this site has been disconnected from wpcom, but the remote site still thinks it's connected.
 					if ( 'error_code' == $key && '401' == $errors[ $key ] ) : ?>
-						<p><?php printf( __( 'Our records show that this site does not have a valid connection to WordPress.com. Please reset your connection to fix this. %1s What caused this? %2s', 'jetpack' ), "<a href='https://jetpack.me/support/#' target='_blank'>", "</a>" ); ?></p>
+						<p><?php printf( __( 'Our records show that this site does not have a valid connection to WordPress.com. Please reset your connection to fix this. %1s What caused this? %2s', 'jetpack' ), "<a href='https://jetpack.me/support/no-valid-wordpress-com-connection/' target='_blank'>", "</a>" ); ?></p>
 						<div class="btn-group">
 							<a href="#" class="button reset-connection"><?php _e( 'Reset the connection', 'jetpack' ); ?></a>
 							<a href="<?php echo esc_url( wp_nonce_url( Jetpack::admin_url( 'jetpack-notice=dismiss' ), 'jetpack-deactivate' ) ); ?>" class="button"><?php _e( 'Deactivate Jetpack', 'jetpack' ); ?></a>
@@ -5656,7 +5656,7 @@ p {
 					<div class="btn-group">
 						<a href="#" class="button reset-connection">Reset the connection</a>
 						<a href="#" class="button is-dev-env">This is a development environment</a>
-						<a href="https://jetpack.me/support" class="button contact-support">Submit a support ticket</a>
+						<a href="https://jetpack.me/contact-support/" class="button contact-support">Submit a support ticket</a>
 						<span class="spinner"></span>
 					</div>
 				</div>
