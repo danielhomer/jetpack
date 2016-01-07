@@ -43,7 +43,7 @@ class Jetpack_Widget_Conditions {
 		switch ( $major ) {
 			case 'category':
 				?>
-				<option value=""><?php _e( 'All category pages', 'jetpack' ); ?></option>
+				<option value=""><?php _e( 'Any category', 'jetpack' ); ?></option>
 				<?php
 
 				$categories = get_categories( array( 'number' => 1000, 'orderby' => 'count', 'order' => 'DESC' ) );
