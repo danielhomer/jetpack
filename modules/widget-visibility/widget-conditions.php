@@ -140,7 +140,7 @@ class Jetpack_Widget_Conditions {
 			break;
 			case 'taxonomy':
 				?>
-				<option value=""><?php _e( 'All taxonomy pages', 'jetpack' ); ?></option>
+				<option value=""><?php _e( 'Any taxonomy terms', 'jetpack' ); ?></option>
 				<?php
 
 				$taxonomies = get_taxonomies( array( '_builtin' => false ), 'objects' );
@@ -157,7 +157,7 @@ class Jetpack_Widget_Conditions {
 					?>
 					<optgroup label="<?php esc_attr_e( $taxonomy->labels->name . ':', 'jetpack' ); ?>">
 						<option value="<?php echo esc_attr( $taxonomy->name ); ?>" <?php selected( $taxonomy->name, $minor ); ?>>
-							<?php _e( 'All pages', 'jetpack' ); ?>
+							<?php _e( 'Any term', 'jetpack' ); ?>
 						</option>
 					<?php
 
@@ -378,9 +378,6 @@ class Jetpack_Widget_Conditions {
 			if ( empty( $widgets ) )
 				continue;
 
-			if ( ! is_array( $widgets ) )
-				continue;
-
 			if ( 'wp_inactive_widgets' == $widget_area )
 				continue;
 
@@ -583,12 +580,13 @@ class Jetpack_Widget_Conditions {
 						$term = explode( '_tax_', $rule['minor'] ); // $term[0] = taxonomy name; $term[1] = term id
 						if ( isset( $term[0] ) && isset( $term[1] ) ) {
 							$term[1] = self::maybe_get_split_term( $term[1], $term[0] );
-						}
-						if ( isset( $term[1] ) && is_tax( $term[0], $term[1] ) )
+							if ( isset( $term[1] ) && is_tax( $term[0], $term[1] ) )
+								$condition_result = true;
+							else if ( isset( $term[1] ) && is_singular() && $term[1] && has_term( $term[1], $term[0] ) )
+								$condition_result = true;
+						} else if ( 1 === count( $term ) && is_tax( $term[0] ) ) {
 							$condition_result = true;
-						else if ( isset( $term[1] ) && is_singular() && $term[1] && has_term( $term[1], $term[0] ) )
-							$condition_result = true;
-						else if ( is_singular() && $post_id = get_the_ID() ){
+						} else if ( is_singular() && $post_id = get_the_ID() ){
 							$terms = get_the_terms( $post_id, $rule['minor'] ); // Does post have terms in taxonomy?
 							if( $terms && ! is_wp_error( $terms ) ) {
 								$condition_result = true;
